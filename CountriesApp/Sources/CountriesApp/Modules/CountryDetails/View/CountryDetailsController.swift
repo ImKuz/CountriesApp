@@ -15,16 +15,11 @@ final class CountryDetailsController: UIViewController {
         dataSource = CountryDetailsTableViewDataSource.makeDataSource(rootView.tableView)
         super.init(nibName: nil, bundle: nil)
         setup()
-        print("controller created")
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    deinit {
-        print("controller disposed")
     }
 
     // MARK: - Lifecycle
