@@ -18,6 +18,7 @@ extension CountryDetailsPresenter: CountryDetailsPresenterInput {
         }
 
         snapshot.appendSections(CountryDetailsTableViewSection.allCases)
+        snapshot.appendItems([.loader], toSection: .borders)
 
         SectionsFactory
             .makeContentSecitons(from: model)

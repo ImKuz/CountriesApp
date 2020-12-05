@@ -99,6 +99,7 @@
 		7455372B25794B4E009B33B3 /* SVGProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGProcessor.swift; sourceTree = "<group>"; };
 		7461F1F9257B9A2D0028898C /* СountryDetailsSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СountryDetailsSectionHeaderCell.swift"; sourceTree = "<group>"; };
 		7461F1FE257BAB8E0028898C /* CountryDetailsPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailsPresentationTests.swift; sourceTree = "<group>"; };
+		7461F20F257BC5CC0028898C /* CountriesApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountriesApp.entitlements; sourceTree = "<group>"; };
 		749D8872257A3F50006B068D /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		74ACB565257A6490009876B2 /* SearchListInteractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListInteractionTests.swift; sourceTree = "<group>"; };
 		74ACB56E257A6525009876B2 /* CountriesServiceFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesServiceFake.swift; sourceTree = "<group>"; };
@@ -197,6 +198,7 @@
 		744F0C6D2577E89500EDAC98 /* CountriesApp */ = {
 			isa = PBXGroup;
 			children = (
+				7461F20F257BC5CC0028898C /* CountriesApp.entitlements */,
 				744F0CAF2577E90D00EDAC98 /* Application */,
 				744F0CB12577E91D00EDAC98 /* Navigation */,
 				744F0CC22577E99100EDAC98 /* Common */,
@@ -808,6 +810,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CountriesApp/CountriesApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4BLYS95997;
 				INFOPLIST_FILE = CountriesApp/Configuration/Info.plist;
@@ -818,6 +821,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkuzmin.CountriesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -828,6 +832,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CountriesApp/CountriesApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4BLYS95997;
 				INFOPLIST_FILE = CountriesApp/Configuration/Info.plist;
@@ -838,6 +843,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkuzmin.CountriesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

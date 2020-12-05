@@ -34,7 +34,6 @@ final class CountryDetailsInteractor: CountryDetailsInteractable {
 
     func start() {
         presentInitialState()
-        setPresenterLoading(true)
 
         DispatchQueue.global(qos: .userInteractive).async {
             self.fetchBorders()

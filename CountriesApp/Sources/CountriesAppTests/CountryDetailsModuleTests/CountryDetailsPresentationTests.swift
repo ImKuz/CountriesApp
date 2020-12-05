@@ -50,6 +50,23 @@ class CountryDetailsPresentationTests: XCTestCase {
         service.tearDown()
     }
 
+    func testLoading() {
+        let loadingExpectation = expectation(description: "loadingExpectation")
+        loadingExpectation.assertForOverFulfill = false
+        interactor?.start()
+
+        presenter.onSnapshotUpdate = { [weak self] state in
+
+            if !state.itemIdentifiers(inSection: .borders).contains(.loader) {
+                loadingExpectation.fulfill()
+            }
+
+            self?.snapshotProvider.apply(state)
+        }
+
+        wait(for: [loadingExpectation], timeout: 1.0)
+    }
+
     func testCommonDataIsPresented() {
         let currenciesExpectation = expectation(description: "currenciesExpectation")
         let languagesExpectation = expectation(description: "languagesExpectation")

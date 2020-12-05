@@ -20,21 +20,6 @@ class CountryDetailsInteractionTests: XCTestCase {
         presenter = CountryDetailsPresenterSpy()
     }
 
-    func testLoading() {
-        let loadingExpectation = expectation(description: "loadingExpectation")
-        var wasSetToLoading = false
-        interactor?.start()
-
-        presenter.wasSetToLoading = {
-            wasSetToLoading = true
-            loadingExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1.0, handler: { _ in
-             XCTAssert(wasSetToLoading)
-        })
-    }
-
     func testBordersFetch() {
         let fetchingBordersExpectation = expectation(description: "fetchingBordersExpectation")
         var fetchedBorders: [String]?
