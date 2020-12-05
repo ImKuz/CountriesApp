@@ -15,15 +15,27 @@ final class PlaceholderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setup() {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupColors()
+    }
+
+    private func setupColors() {
+        backgroundColor = traitCollection.userInterfaceStyle == .dark
+            ? .black
+            : .systemGray6
+    }
+
+    private func setup() {
         backgroundColor = .systemGray6
         setupLayout()
+        setupColors()
 
         imageView.image = Constants.image
         imageView.tintColor = .systemGray5
     }
 
-    func setupLayout() {
+    private func setupLayout() {
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.center

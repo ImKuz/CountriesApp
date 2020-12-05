@@ -4,90 +4,102 @@ import Localization
 
 struct CountryDetailsSectionsFactory {
 
-    static func makeSecitons(
+    typealias SectionData = (
+        section: CountryDetailsTableViewSection,
+        rows: [CountryDetailsRowData]
+    )
+
+    static func makeContentSecitons(
         from model: CountryModel
-    ) -> [(section: CountryDetailsTableViewSection, rows: [CountryDetailsRowData])] {
+    ) -> [SectionData] {
         [
-            (.currencies, makeCurrenciesRows(from: model.currencies)),
-            (.languages, makeLanguagesRows(from: model.languages))
+            makeHeaderSection(from: model),
+            makeCurrenciesSection(from: model.currencies),
+            makeLanguagesSection(from: model.languages)
         ]
+        .compactMap { $0 }
     }
 
-    static func makeBordersSectionRowData(
-        from names: [String]
-    ) -> [CountryDetailsRowData] {
-        var rows = [makeTitleRow(title: TextConstants.bordersTitle)]
-        rows.append(contentsOf: makeBordersRows(from: names))
+    static func makeBordersSection(from models: [String]) -> SectionData? {
+        guard !models.isEmpty else { return nil }
 
-        return rows
+        let rowItems = models.map {
+            makeSectionRow(title: $0, isSelectable: true)
+        }
+
+        var sectionRows = [makeHeader(title: TextConstants.bordersTitle)]
+        sectionRows.append(contentsOf: rowItems)
+
+        return (CountryDetailsTableViewSection.borders, sectionRows)
     }
 }
 
-// MARK: - Rows
+// MARK: - Content
 
 private extension CountryDetailsSectionsFactory {
 
-    static func makeCurrenciesRows(from models: [Currency]) -> [CountryDetailsRowData] {
-        guard !models.isEmpty else { return [] }
+    static func makeHeaderSection(from model: CountryModel) -> SectionData {
+        let headerViewModel = CountryDetailsHeaderCell.ViewModel(
+            name: model.name,
+            nativeName: model.nativeName,
+            flagURL: model.flag
+        )
 
-        var rows = [makeTitleRow(title: TextConstants.currenciesTitle)]
-
-        let dataRows = models.compactMap { model -> CountryDetailsRowData? in
-            guard let name = model.name else { return nil }
-            let row = makeCommonRow(title: name, subtitle: model.code)
-
-            return .common(row)
-        }
-
-        rows.append(contentsOf: dataRows)
-        return rows
-    }
-
-    static func makeLanguagesRows(from models: [Language]) -> [CountryDetailsRowData] {
-        guard !models.isEmpty else { return [] }
-
-        var rows = [makeTitleRow(title: TextConstants.languagesTitle)]
-
-        let dataRows = models.map { model -> CountryDetailsRowData in
-            let row = makeCommonRow(title: model.name, subtitle: model.nativeName)
-
-            return .common(row)
-        }
-
-        rows.append(contentsOf: dataRows)
-        return rows
-    }
-
-    static func makeTitleRow(title: String) -> CountryDetailsRowData {
-        CountryDetailsRowData.common(
-            NSAttributedString(string: title, attributes: Attributes.title)
+        return (
+            section: .header,
+            rows: [.tableHeader(headerViewModel)]
         )
     }
 
-    static func makeBordersRows(from models: [String]) -> [CountryDetailsRowData] {
-        models.map {
-            let row = makeCommonRow(title: $0)
+    static func makeCurrenciesSection(from models: [Currency]) -> SectionData? {
+        guard !models.isEmpty else { return nil }
 
-            return .border(row)
-        }
-    }
-
-    static func makeCommonRow(title: String, subtitle: String? = nil) -> NSAttributedString {
-        let string = NSMutableAttributedString(
-            string: title,
-            attributes: Attributes.elementTitle
-        )
-
-        if let subtitle = subtitle {
-            let subtitle = NSAttributedString(
-                string: "\n\(subtitle)",
-                attributes: Attributes.elementSubtitle
+        let rowItems = models.map {
+            makeSectionRow(
+                title: $0.name ?? TextConstants.currency,
+                subtitle: $0.code
             )
+        }
+        var sectionRows = [makeHeader(title: TextConstants.currenciesTitle)]
+        sectionRows.append(contentsOf: rowItems)
 
-            string.append(subtitle)
+        return (.currencies, sectionRows)
+    }
+
+    static func makeLanguagesSection(from models: [Language]) -> SectionData? {
+        guard !models.isEmpty else { return nil }
+
+        let rowItems = models.map {
+            makeSectionRow(title: $0.name, subtitle: $0.nativeName)
         }
 
-        return string
+        var sectionRows = [makeHeader(title: TextConstants.languagesTitle)]
+        sectionRows.append(contentsOf: rowItems)
+
+        return (.languages, sectionRows)
+    }
+}
+
+// MARK: - Helpers
+
+private extension CountryDetailsSectionsFactory {
+
+    static func makeSectionRow(
+        title: String,
+        subtitle: String? = nil,
+        isSelectable: Bool = false
+    ) -> CountryDetailsRowData {
+        let viewModel = CountryDetailsCell.ViewModel(
+            title: title,
+            subtitle: subtitle,
+            isSelectable: isSelectable
+        )
+
+        return .content(viewModel)
+    }
+
+    static func makeHeader(title: String) -> CountryDetailsRowData {
+        .sectionHeader(title)
     }
 }
 
@@ -97,27 +109,9 @@ private extension CountryDetailsSectionsFactory {
 
     enum TextConstants {
 
+        static let currency = "currency".localized()
         static let languagesTitle = "country_details_languages_title".localized()
         static let currenciesTitle = "country_details_currencies_title".localized()
         static let bordersTitle = "country_details_borders_title".localized()
-    }
-
-    enum Attributes {
-
-        static let title: StringAttributes = TextStyle.attributes(
-            weight: .bold,
-            size: 20
-        )
-
-        static let elementTitle: StringAttributes = TextStyle.attributes(
-            weight: .medium,
-            size: 17
-        )
-
-        static let elementSubtitle: StringAttributes = TextStyle.attributes(
-            weight: .regular,
-            size: 15,
-            color: .lightGray
-        )
     }
 }

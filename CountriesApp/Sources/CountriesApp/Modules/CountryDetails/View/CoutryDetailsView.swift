@@ -15,10 +15,25 @@ final class CountryDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupColors()
+    }
+
     private func setup() {
         tableView.showsVerticalScrollIndicator = false
-        backgroundColor = .systemGray6
+        setupColors()
         setupLayout()
+    }
+
+    private func setupColors() {
+        if traitCollection.userInterfaceStyle == .dark {
+            tableView.backgroundColor = .black
+            backgroundColor = .black
+        } else {
+            tableView.backgroundColor = .systemGray6
+            backgroundColor = .systemGray6
+        }
     }
 
     private func setupLayout() {

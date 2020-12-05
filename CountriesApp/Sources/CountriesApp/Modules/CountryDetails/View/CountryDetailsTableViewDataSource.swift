@@ -18,7 +18,7 @@ class CountryDetailsTableViewDataSource {
         _ rowData: CountryDetailsRowData
     ) -> UITableViewCell {
         switch rowData {
-        case .header(let viewModel):
+        case .tableHeader(let viewModel):
             let cell = tableView.dequeueReusableCellWithType(
                 CountryDetailsHeaderCell.self,
                 forIndexPath: indexPath
@@ -26,21 +26,21 @@ class CountryDetailsTableViewDataSource {
 
             cell?.configure(with: viewModel)
             return cell ?? UITableViewCell()
-        case .border(let string):
+        case .content(let viewModel):
             let cell = tableView.dequeueReusableCellWithType(
                 CountryDetailsCell.self,
                 forIndexPath: indexPath
             )
 
-            cell?.configure(with: string, isTappable: true)
+            cell?.configure(with: viewModel)
             return cell ?? UITableViewCell()
-        case .common(let string):
+        case .sectionHeader(let title):
             let cell = tableView.dequeueReusableCellWithType(
-                CountryDetailsCell.self,
+                СountryDetailsSectionHeaderCell.self,
                 forIndexPath: indexPath
             )
 
-            cell?.configure(with: string, isTappable: false)
+            cell?.configure(with: title)
             return cell ?? UITableViewCell()
         case .loader:
             let cell = tableView.dequeueReusableCellWithType(

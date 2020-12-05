@@ -9,7 +9,7 @@ final class SearchListInteractor: SearchListInteractable {
     var onNavigation: ((SearchListNavigationActions) -> Void)?
 
     let presenter: SearchListPresentable
-    let countriesService: CountriesAPI
+    private let countriesService: CountriesAPI
 
     private var fetchTask: URLSessionTaskProtocol?
     private var fetchedData = [CountryModel]()

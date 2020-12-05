@@ -1,6 +1,6 @@
 import UIKit
 
-public extension UITableView {
+extension UITableView {
 
     func registerClassForCell(_ cellClass: UITableViewCell.Type) {
         register(
@@ -17,9 +17,10 @@ public extension UITableView {
         _ cellClass: T.Type,
         forIndexPath indexPath: IndexPath
     ) -> T? {
-        guard let cell = dequeueReusableCell(withIdentifier: cellClass.defaultIdentifier,
-                                             for: indexPath) as? T
-        else {
+        guard let cell = dequeueReusableCell(
+                withIdentifier: cellClass.defaultIdentifier,
+                for: indexPath
+        ) as? T else {
             return nil
         }
 

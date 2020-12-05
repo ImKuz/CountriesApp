@@ -1,6 +1,6 @@
 import UIKit
 
-enum CountryDetailsTableViewSection: Hashable {
+enum CountryDetailsTableViewSection: Hashable, CaseIterable {
 
     case header
     case languages

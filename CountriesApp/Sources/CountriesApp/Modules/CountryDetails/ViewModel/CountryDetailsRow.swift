@@ -2,8 +2,8 @@ import UIKit
 
 enum CountryDetailsRowData: Hashable {
 
-    case header(CountryDetailsHeaderCell.ViewModel)
+    case tableHeader(CountryDetailsHeaderCell.ViewModel)
+    case sectionHeader(String)
+    case content(CountryDetailsCell.ViewModel)
     case loader
-    case common(NSAttributedString)
-    case border(NSAttributedString)
 }

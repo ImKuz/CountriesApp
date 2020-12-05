@@ -17,23 +17,11 @@ extension CountryDetailsPresenter: CountryDetailsPresenterInput {
             return
         }
 
-        let headerViewModel = CountryDetailsHeaderCell.ViewModel(
-            name: model.name,
-            nativeName: model.nativeName,
-            flagURL: model.flag
-        )
-
-        snapshot.appendSections([.header])
-        snapshot.appendItems([.header(headerViewModel)])
+        snapshot.appendSections(CountryDetailsTableViewSection.allCases)
 
         SectionsFactory
-            .makeSecitons(from: model)
-            .forEach {
-                snapshot.appendSections([$0.section])
-                snapshot.appendItems($0.rows, toSection: $0.section)
-            }
-
-        snapshot.appendSections([.borders])
+            .makeContentSecitons(from: model)
+            .forEach { snapshot.appendItems($0.rows, toSection: $0.section) }
 
         onTitleSetup?(model.name)
         onSnapshotUpdate?(snapshot)
@@ -47,9 +35,11 @@ extension CountryDetailsPresenter: CountryDetailsPresenterInput {
             return
         }
 
-        let data = SectionsFactory.makeBordersSectionRowData(from: names)
-        snapshot.appendItems(data, toSection: .borders)
+        guard let data = SectionsFactory.makeBordersSection(from: names) else {
+            return
+        }
 
+        snapshot.appendItems(data.rows, toSection: data.section)
         onSnapshotUpdate?(snapshot)
     }
 

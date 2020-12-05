@@ -2,9 +2,11 @@ import UIKit
 import Kingfisher
 import SVGKit
 
-public struct SVGImageProcessor: ImageProcessor {
-    public var identifier: String = "com.appidentifier.webpprocessor"
-    public func process(
+struct SVGImageProcessor: ImageProcessor {
+
+    var identifier: String = "\(Bundle.main.bundleIdentifier!).imageProcessor"
+
+    func process(
         item: ImageProcessItem,
         options: KingfisherParsedOptionsInfo
     ) -> KFCrossPlatformImage? {

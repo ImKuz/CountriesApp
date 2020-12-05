@@ -2,24 +2,22 @@ import UIKit
 
 final class CountryDetailsCell: UITableViewCell {
 
-    // MARK: - UI Components
+    struct ViewModel: Hashable {
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+        let title: String
+        let subtitle: String?
+        let isSelectable: Bool
 
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-
-        return label
-    }()
-
-    private let placeholderView = UIView()
-
-    // MARK: - Init
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(title)
+        }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setup()
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        textLabel?.numberOfLines = 0
+        detailTextLabel?.numberOfLines = 0
+        detailTextLabel?.textColor = Constants.subtitleColor
     }
 
     @available(*, unavailable)
@@ -27,37 +25,16 @@ final class CountryDetailsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Setup
-
-    private func setup() {
-        contentView.addSubview(placeholderView)
-        placeholderView.snp.makeConstraints { make in
-            make.edges
-                .equalToSuperview()
-            make.height
-                .greaterThanOrEqualTo(Constants.minRowHeight)
-        }
-
-        placeholderView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.leading
-                .equalToSuperview()
-                .inset(Spacing.medium)
-            make.top.bottom.trailing
-                .equalToSuperview()
-                .inset(Spacing.small)
-        }
-    }
-
     // MARK: - Configuration
 
-    func configure(with title: NSAttributedString, isTappable: Bool) {
-        titleLabel.attributedText = title
-        isUserInteractionEnabled = isTappable
+    func configure(with viewModel: ViewModel) {
+        textLabel?.text = viewModel.title
+        detailTextLabel?.text = viewModel.subtitle
 
-        if isTappable {
+        isUserInteractionEnabled = viewModel.isSelectable
+
+        if viewModel.isSelectable {
             accessoryType = .disclosureIndicator
-            selectionStyle = .none
         }
     }
 }
@@ -66,6 +43,7 @@ private extension CountryDetailsCell {
 
     enum Constants {
 
+        static let subtitleColor: UIColor = .systemGray2
         static let minRowHeight: CGFloat = 50
     }
 }

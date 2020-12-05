@@ -1,6 +1,6 @@
 import UIKit
 
-public extension UITableViewCell {
+extension UITableViewCell {
 
     class var defaultIdentifier: String {
         return "\(self)"

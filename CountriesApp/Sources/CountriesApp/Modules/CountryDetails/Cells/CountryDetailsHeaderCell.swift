@@ -4,33 +4,33 @@ import SnapKit
 
 final class CountryDetailsHeaderCell: UITableViewCell {
 
-    // MARK: - UIComponents
-
     struct ViewModel: Hashable {
         let name: String
         let nativeName: String
         let flagURL: URL
     }
 
+    // MARK: - UIComponents
+
     private let nameLabel: UILabel = {
         let label = UILabel()
 
-        label.textColor = .black
+        label.textColor = .label
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = .bold(size: 24)
+        label.font = Constants.nameLabelFont
         label.accessibilityLabel = ""
 
         return label
     }()
 
-    private let subtitleLabel: UILabel = {
+    private let nativeNameLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .lightGray
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = .regular(size: 18)
+        label.font = Constants.nativeNameLabelFont
 
         return label
     }()
@@ -58,7 +58,8 @@ final class CountryDetailsHeaderCell: UITableViewCell {
     // MARK: - Setup
 
     private func setup() {
-        backgroundColor = .systemGray6
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
         isUserInteractionEnabled = false
         flagImageView.kf.indicatorType = .activity
         setupLayout()
@@ -83,14 +84,16 @@ final class CountryDetailsHeaderCell: UITableViewCell {
                 .inset(Spacing.medium)
         }
 
-        contentView.addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints { make in
+        contentView.addSubview(nativeNameLabel)
+        nativeNameLabel.snp.makeConstraints { make in
             make.top
                 .equalTo(nameLabel.snp.bottom)
                 .offset(Spacing.medium)
-            make.leading.trailing.bottom
+            make.leading.trailing
                 .equalToSuperview()
                 .inset(Spacing.medium)
+            make.bottom
+                .equalToSuperview()
         }
     }
 
@@ -98,13 +101,15 @@ final class CountryDetailsHeaderCell: UITableViewCell {
 
     func configure(with viewModel: ViewModel) {
         nameLabel.text = viewModel.name
-        subtitleLabel.text = viewModel.nativeName
+        nativeNameLabel.text = viewModel.nativeName
 
         flagImageView.kf.setImage(
             with: viewModel.flagURL,
             options: [
                 .processor(SVGImageProcessor()),
-                .transition(.fade(0.5))
+                .transition(.fade(0.5)),
+                .backgroundDecode,
+                .progressiveJPEG(.default)
             ]
         )
     }
@@ -113,6 +118,9 @@ final class CountryDetailsHeaderCell: UITableViewCell {
 private extension CountryDetailsHeaderCell {
 
     enum Constants {
+
+        static let nameLabelFont: UIFont = .bold(size: 24)
+        static let nativeNameLabelFont: UIFont = .regular(size: 18)
 
         static let flagImageViewHeight: CGFloat = 100
     }

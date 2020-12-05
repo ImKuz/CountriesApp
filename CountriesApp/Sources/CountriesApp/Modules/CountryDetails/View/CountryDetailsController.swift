@@ -4,7 +4,7 @@ import Localization
 final class CountryDetailsController: UIViewController {
 
     var interactor: CountryDetailsInteractable?
-    var presenter: CountryDetailsPresenterOutput?
+    weak var presenter: CountryDetailsPresenterOutput?
 
     private let rootView = CountryDetailsView()
     private let dataSource: CountryDetailsDiffableDataSource
@@ -15,11 +15,16 @@ final class CountryDetailsController: UIViewController {
         dataSource = CountryDetailsTableViewDataSource.makeDataSource(rootView.tableView)
         super.init(nibName: nil, bundle: nil)
         setup()
+        print("controller created")
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        print("controller disposed")
     }
 
     // MARK: - Lifecycle
@@ -38,10 +43,15 @@ final class CountryDetailsController: UIViewController {
     private func setup() {
         dataSource.defaultRowAnimation = .automatic
         navigationItem.largeTitleDisplayMode = .never
+        rootView.tableView.delegate = self
+        registerCells()
+    }
+
+    private func registerCells() {
         rootView.tableView.registerClassForCell(CountryDetailsCell.self)
         rootView.tableView.registerClassForCell(CountryDetailsHeaderCell.self)
         rootView.tableView.registerClassForCell(LoadingCell.self)
-        rootView.tableView.delegate = self
+        rootView.tableView.registerClassForCell(СountryDetailsSectionHeaderCell.self)
     }
 
     private func listenToPresenter() {
