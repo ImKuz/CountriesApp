@@ -4,6 +4,7 @@ Simple iOS applicaiton written is Swift displaying some countries info based on 
 
 ---
 **Architecture:** Clean Swift (a.k.a VIP)
+
 **Supported Devices:** iPhone, iPad
 
 ![Oops...](https://github.com/ImKuz/CountriesApp/blob/main/Resources/iPadImg.png?raw=true)
