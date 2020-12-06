@@ -8,6 +8,7 @@ final class AppCoordinator: Coordinator {
     let detailsNavigationController = UINavigationController()
 
     private let countriesService: CountriesAPI
+    private var currentDetailsViewId: String?
 
     init() {
         countriesService = CountriesAPIService()
@@ -33,12 +34,7 @@ extension AppCoordinator {
             onNavigation: { [weak self] action in
                 switch action {
                 case .details(let model):
-                    if let detailsModule = self?.makeDetailsModule(from: model) {
-                        self?.detailsNavigationController.pushViewController(
-                            detailsModule,
-                            animated: true
-                        )
-                    }
+                    self?.pushDetails(with: model)
                 }
             }
         )
@@ -53,9 +49,7 @@ extension AppCoordinator {
             onNavigation: { [weak self] route in
                 switch route {
                 case .details(let model):
-                    if let detailsModule = self?.makeDetailsModule(from: model) {
-                        self?.replaceRootDetailsController(with: detailsModule)
-                    }
+                    self?.replaceRootDetailsController(with: model)
                 }
             }
         )
@@ -75,10 +69,24 @@ extension AppCoordinator {
 
 extension AppCoordinator {
 
-    func replaceRootDetailsController(with controller: UIViewController) {
-        detailsNavigationController.viewControllers = [controller]
+    func pushDetails(with model: CountryModel) {
+        let module = makeDetailsModule(from: model)
+        detailsNavigationController.pushViewController(
+            module,
+            animated: true
+        )
+    }
+
+    func replaceRootDetailsController(with model: CountryModel) {
+        guard model.code != currentDetailsViewId else {
+            return
+        }
+        currentDetailsViewId = model.code
+        let module = makeDetailsModule(from: model)
+
+        detailsNavigationController.viewControllers = [module]
         splitViewController.setViewController(detailsNavigationController, for: .secondary)
-        splitViewController.showDetailViewController(controller, sender: self)
+        splitViewController.showDetailViewController(module, sender: self)
     }
 }
 

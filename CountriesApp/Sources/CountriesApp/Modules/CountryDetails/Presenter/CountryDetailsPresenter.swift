@@ -29,32 +29,15 @@ extension CountryDetailsPresenter: CountryDetailsPresenterInput {
     }
 
     func configureBorders(with names: [String]) {
-        guard
-            var snapshot = snapshotProvider?.currentSnapshot,
-            !names.isEmpty
-        else {
-            return
-        }
-
-        guard let data = SectionsFactory.makeBordersSection(from: names) else {
-            return
-        }
-
-        snapshot.appendItems(data.rows, toSection: data.section)
-        onSnapshotUpdate?(snapshot)
-    }
-
-    func setLoadingBorders(_ isLoading: Bool) {
         guard var snapshot = snapshotProvider?.currentSnapshot else {
             return
         }
 
-        if isLoading {
-            snapshot.appendItems([.loader], toSection: .borders)
-        } else {
-            snapshot.deleteItems([.loader])
+        if let data = SectionsFactory.makeBordersSection(from: names) {
+            snapshot.appendItems(data.rows, toSection: data.section)
         }
 
+        snapshot.deleteItems([.loader])
         onSnapshotUpdate?(snapshot)
     }
 }

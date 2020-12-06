@@ -42,7 +42,6 @@ final class CountryDetailsInteractor: CountryDetailsInteractable {
 
     private func fetchBorders() {
         let task = countriesService.countriesList(by: model.borders) { [weak self] result in
-            self?.setPresenterLoading(false)
             switch result {
             case .failure(let error):
                 print(error.localizedDescription)
@@ -69,12 +68,6 @@ extension CountryDetailsInteractor {
 // MARK: - Presenter manipulation
 
 private extension CountryDetailsInteractor {
-
-    func setPresenterLoading(_ isLoading: Bool) {
-        DispatchQueue.main.async { [self] in
-            presenter.setLoadingBorders(isLoading)
-        }
-    }
 
     func presentInitialState() {
         DispatchQueue.main.async { [self] in

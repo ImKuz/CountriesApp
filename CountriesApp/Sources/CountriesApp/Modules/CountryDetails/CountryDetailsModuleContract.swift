@@ -28,7 +28,6 @@ protocol CountryDetailsPresenterInput {
 
     func configureInitialState(with model: CountryModel)
     func configureBorders(with names: [String])
-    func setLoadingBorders(_ isLoading: Bool)
 }
 
 // MARK: - Navigation
